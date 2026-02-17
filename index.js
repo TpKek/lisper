@@ -1,12 +1,12 @@
 // HINTS:
 // 1. Import express and axios
-import express from 'express'
-import axios from 'axios'
+import express from 'express';
+import axios from 'axios';
 
 // 2. Create an express app and set the port number.
 const app = express();
-const port = 3000
-const url = 'https://secrets-api.appbrewery.com'
+const port = 3000;
+const url = 'https://secrets-api.appbrewery.com';
 
 // 3. Use the public folder for static files.
 app.use(express.static('public'));
@@ -21,16 +21,19 @@ app.get('/', async (req, res) => {
     const username = response.data.username;
     res.render('index.ejs', {
       secret: secret,
-      user: username
+      user: username,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Something went wrong');
+    res.status(500).send(err.message);
   }
 });
 
 // 6. Listen on your predefined port and start the server.
 
+// Export app for Vercel serverless deployment
+export default app;
+
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`)
+  console.log(`App listening on port ${port}`);
 });
