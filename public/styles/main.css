@@ -1,94 +1,302 @@
+/* ============================================
+   Lisper - Secret Sharing App
+   Based on Personal-Website Design System
+   ============================================ */
+
+/* Dark Reader Compatibility - Prevent double-inversion */
+html {
+  color-scheme: dark;
+}
+
+/* CSS Custom Properties */
 :root {
+  /* Tell browsers and extensions this is a dark-themed site */
+  color-scheme: dark;
+
+  /* Primary Colors - Deep Slate Navy */
+  --color-primary-900: #0a0f1a;
+  --color-primary-800: #0f1729;
+  --color-primary-700: #1a2332;
+  --color-primary-600: #243044;
+  --color-primary-500: #2d3f5a;
+  --color-primary-400: #3d5575;
+  --color-primary-300: #5a7a9a;
+  --color-primary-200: #8ba3bf;
+  --color-primary-100: #c5d4e3;
+
+  /* Accent - Trust Green */
+  --color-accent-primary: #00c896;
+  --color-accent-hover: #00a67d;
+  --color-accent-glow: rgba(0, 200, 150, 0.15);
+
+  /* Secondary - Warm Gold */
+  --color-gold-primary: #d4a853;
+  --color-gold-hover: #c49a3d;
+  --color-gold-glow: rgba(212, 168, 83, 0.15);
+
+  /* Gradient Colors for Card */
+  --gradient-cyan: #5ddcff;
+  --gradient-blue: #3c67e3;
+  --gradient-purple: #4e00c2;
+
+  /* Neutral Colors - Cool Grays */
+  --color-gray-900: #0f172a;
+  --color-gray-800: #1e293b;
+  --color-gray-700: #334155;
+  --color-gray-600: #475569;
+  --color-gray-500: #64748b;
+  --color-gray-400: #94a3b8;
+  --color-gray-300: #cbd5e1;
+  --color-gray-200: #e2e8f0;
+  --color-gray-100: #f1f5f9;
+  --color-gray-50: #f8fafc;
+
+  /* Semantic Colors */
+  --color-background: var(--color-primary-900);
+  --color-background-elevated: var(--color-primary-800);
+  --color-background-card: var(--color-primary-700);
+  --color-text-primary: var(--color-gray-50);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-400);
+  --color-border: var(--color-primary-600);
+
+  /* Typography */
+  --font-heading:
+    'Titan One', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  --font-sans:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-handwriting: 'Gloria Hallelujah', cursive;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 40px -10px var(--color-accent-primary);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* Card Dimensions */
   --card-height: 65vh;
   --card-width: calc(var(--card-height) / 1.5);
 }
 
-body {
-  min-height: 100vh;
-  background: #212534;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+/* Reset & Base */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-h1 {
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2xl) var(--space-lg);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Focus Styles for Accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-accent-primary);
   color: white;
-  font-family: "Titan One", cursive;
-  margin-bottom: 20px;
 }
+
+/* Background Effects */
+.background-effects {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 60% 40% at 20% 20%,
+      rgba(0, 200, 150, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 80% 80%,
+      rgba(45, 63, 90, 0.2) 0%,
+      transparent 50%
+    );
+}
+
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 200, 150, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 200, 150, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(
+    ellipse 80% 50% at 50% 50%,
+    black 40%,
+    transparent 100%
+  );
+}
+
+/* Main Title */
+.main-title {
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  margin-bottom: var(--space-xl);
+  text-align: center;
+  position: relative;
+}
+
+.main-title::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-accent-primary),
+    transparent
+  );
+  margin: var(--space-md) auto 0;
+  border-radius: var(--radius-sm);
+}
+
+/* Card Container */
+.card-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+/* Secret Card */
 .card {
-  background: url("../images/whisper-img.jpg");
+  background: url('../images/whisper-img.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: var(--card-width);
   height: var(--card-height);
+  max-width: 90vw;
   padding: 3px;
   position: relative;
-  border-radius: 6px;
+  border-radius: var(--radius-lg);
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  display: flex;
-  font-size: 1.5em;
-  color: rgb(88 199 250 / 0%);
-  font-family: "Gloria Hallelujah", cursive;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: transparent;
+  font-family: var(--font-handwriting);
+  transition: color 1s ease;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .card:hover {
-  color: rgb(88 199 250 / 100%);
-  transition: color 1s;
-}
-.card:hover:before,
-.card:hover:after {
-  animation: none;
-  opacity: 0;
+  color: rgba(88, 199, 250, 1);
 }
 
+/* Animated Gradient Border */
 .card::before {
-  content: "";
+  content: '';
   width: 104%;
   height: 102%;
-  border-radius: 8px;
+  border-radius: calc(var(--radius-lg) + 2px);
   background-image: linear-gradient(
     var(--rotate),
-    #5ddcff,
-    #3c67e3 43%,
-    #4e00c2
+    var(--gradient-cyan),
+    var(--gradient-blue) 43%,
+    var(--gradient-purple)
   );
   position: absolute;
-  z-index: -1;
+  z-index: -2;
   top: -1%;
   left: -2%;
   animation: spin 2.5s linear infinite;
 }
 
+/* Glow effect - completely behind the card, not overlapping */
 .card::after {
   position: absolute;
-  content: "";
-  top: calc(var(--card-height) / 6);
-  left: 0;
-  right: 0;
+  content: '';
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: -1;
   height: 100%;
   width: 100%;
-  margin: 0 auto;
-  transform: scale(0.8);
-  filter: blur(calc(var(--card-height) / 6));
+  filter: blur(80px);
   background-image: linear-gradient(
     var(--rotate),
-    #5ddcff,
-    #3c67e3 43%,
-    #4e00c2
+    var(--gradient-cyan),
+    var(--gradient-blue) 43%,
+    var(--gradient-purple)
   );
-  opacity: 1;
-  transition: opacity 0.5s;
+  opacity: 0.4;
   animation: spin 2.5s linear infinite;
+  pointer-events: none;
+  border-radius: var(--radius-lg);
 }
+
+.card:hover::before,
+.card:hover::after {
+  animation: none;
+  opacity: 0;
+}
+
 @property --rotate {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 132deg;
   inherits: false;
 }
@@ -102,16 +310,180 @@ h1 {
   }
 }
 
-a {
-  color: #212534;
-  text-decoration: none;
-  font-family: sans-serif;
-  font-weight: bold;
-  margin-top: 2rem;
+/* Secret Text */
+.card p {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-xl);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  line-height: 1.5;
+  max-width: 85%;
 }
 
+/* User Attribution */
 .user {
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-family: var(--font-heading);
+  margin-top: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.user::before {
+  content: '—';
+  color: var(--color-accent-primary);
+}
+
+/* New Secret Button */
+.new-secret-btn {
+  margin-top: var(--space-2xl);
+  padding: var(--space-md) var(--space-2xl);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
   color: white;
-  font-size: 24px;
-  font-family: "Titan One", cursive;
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-primary),
+    var(--gradient-blue)
+  );
+  border: none;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-base);
+  box-shadow:
+    var(--shadow-md),
+    0 0 20px rgba(0, 200, 150, 0.3);
+}
+
+.new-secret-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left var(--transition-slow);
+}
+
+.new-secret-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 30px rgba(0, 200, 150, 0.5);
+}
+
+.new-secret-btn:hover::before {
+  left: 100%;
+}
+
+.new-secret-btn:active {
+  transform: translateY(0);
+}
+
+.new-secret-btn:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 4px;
+}
+
+/* Loading State */
+.new-secret-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.new-secret-btn.loading .btn-text {
+  opacity: 0;
+}
+
+.new-secret-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: white;
+  border-radius: 50%;
+  animation: btn-loading 0.8s linear infinite;
+}
+
+@keyframes btn-loading {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Footer */
+.footer {
+  margin-top: auto;
+  padding-top: var(--space-2xl);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.footer a {
+  color: var(--color-accent-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :root {
+    --card-height: 50vh;
+  }
+
+  body {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+  }
+
+  .new-secret-btn {
+    padding: var(--space-sm) var(--space-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --card-height: 45vh;
+  }
+
+  .main-title {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    font-size: 1rem;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
